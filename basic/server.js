@@ -2,9 +2,18 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended : true }));
-
 const MongoClient = require('mongodb').MongoClient;
-MongoClient.connect('mongodb+srv://dgh07027:<password>@cluster0.0vpladk.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
+
+var db;
+MongoClient.connect('mongodb+srv://dgh07027:thdtmdgml@0826@cluster0.0vpladk.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
+    // 연결되면 할 일
+    if(에러) return console.log(에러);
+    db = client.db('todoapp');
+
+    db.collection('post').insertOne({_id: 100, 이름: 'John', 나이: 20}, function(에러, 결과){
+        console.log('저장완료');
+    });
+
     app.listen(8080, function () {
         console.log('listening on 8080');
     });
