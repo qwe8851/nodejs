@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended : true }));
 const MongoClient = require('mongodb').MongoClient;
+app.set('view engine', 'ejs');
 
 var db;
 MongoClient.connect('mongodb+srv://dgh07027:thdtmdgml@0826@cluster0.0vpladk.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
@@ -35,8 +36,16 @@ app.get('/write', function (요청, 응답) {
     응답.sendFile(__dirname + '/write.html');
 });
 
+app.get('/list', function (요청, 응답) {
+    응답.render('list.ejs');
+});
+
 app.post('/add', function (요청, 응답) {
     응답.send('전송완료');
-    console.log(요청.body.date );
+    console.log(요청.body.date);
     console.log(요청.body.title);
+
+    db.collection('post').insertOne({제목: 요청.body.title, 날짜: 요청.body.date}, function (err, result) {
+        console.log('저장완료');
+    });
 });
