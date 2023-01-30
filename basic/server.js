@@ -3,8 +3,11 @@ const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended : true }));
 
-app.listen(8080, function(){
-    console.log('listening on 8080');
+const MongoClient = require('mongodb').MongoClient;
+MongoClient.connect('mongodb+srv://dgh07027:<password>@cluster0.0vpladk.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
+    app.listen(8080, function () {
+        console.log('listening on 8080');
+    });
 });
 
 app.get('/', function (요청, 응답) {
