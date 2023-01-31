@@ -42,10 +42,13 @@ app.post('/add', function (요청, 응답) {
     db.collection('counter').findOne({ name: '게시물갯수'}, function(에러, 결과){
         console.log(결과.totalPost);
         let 총게시물객수 = 결과.totalPost;
-        
+
         // 데이터 입력
         db.collection('post').insertOne({ _id: 총게시물객수 + 1, 제목: 요청.body.title, 날짜: 요청.body.date }, function (에러, 결과) {
             console.log('저장완료');
+            db.collection('counter').updateOne({ name: '게시물갯수' }, { $inc: { totalPost: 1 }}, function(에러, 결과){
+                if(에러){ return console.log(에러)}
+            })
         });
     });
 });
