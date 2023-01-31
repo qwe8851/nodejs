@@ -37,15 +37,25 @@ app.get('/write', function (요청, 응답) {
 });
 
 app.get('/list', function (요청, 응답) {
-    응답.render('list.ejs');
+    // 데이터 출력
+    db.collection('post').find().toArray(function(에러, 결과){
+        // 모든 데이터 출력
+        console.log(결과);  // 1. db에서 찾은 자료를
+        응답.render('list.ejs', { posts: 결과 });   // 2. ejs파일에 넣기
+    });
+
 });
+
+
+
 
 app.post('/add', function (요청, 응답) {
     응답.send('전송완료');
     console.log(요청.body.date);
     console.log(요청.body.title);
 
-    db.collection('post').insertOne({제목: 요청.body.title, 날짜: 요청.body.date}, function (err, result) {
+    // 데이터 입력
+    db.collection('post').insertOne({제목: 요청.body.title, 날짜: 요청.body.date}, function (에러, 결과) {
         console.log('저장완료');
     });
 });
