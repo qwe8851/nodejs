@@ -5,6 +5,8 @@ app.use(bodyParser.urlencoded({ extended : true }));
 const MongoClient = require('mongodb').MongoClient;
 app.set('view engine', 'ejs');
 
+app.use('public', express.static('public'));
+
 var db;
 MongoClient.connect('mongodb+srv://dgh07027:thdtmdgml@0826@cluster0.0vpladk.mongodb.net/?retryWrites=true&w=majority', function(에러, client){
     // 연결되면 할 일
