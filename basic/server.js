@@ -69,6 +69,8 @@ app.delete('/delete', function (요청, 응답){
     요청.body._id = parseInt(요청.body._id);
     db.collection('post').deleteOne(요청.body, function(에러, 결과){
         console.log('삭제완료');
+        // 응답.status(200).send({ message : '성공했습니다.'});
+        응답.status(400).send({ message : '실패했습니다.' });
     });
 });
 
