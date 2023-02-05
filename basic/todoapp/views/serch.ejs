@@ -17,21 +17,14 @@
 <body>
     <%- include('nav.html') %>
 
-    <h4 class="ml-2 my-3 text-center">서버에서 가져온 할 일 리스트</h4>
-    <div class="container input-group mb-2">
-        <input id="serchInput" class="form-control">
-        <button id="serch" class="input-group-append btn btn-danger">검색</button>
-    </div>
-
-
     <div class="container">
         <ul class="list-group">
-            <% posts.forEach((e, i)=>{ %>
+            <% serch.forEach((e, i)=>{ %>
                 <li class="list-group-item">
-                    <p>글번호 : <%= posts[i]._id %></p>
-                    <h4>할 일 : <%= posts[i].제목 %></h4>
-                    <p>마감일 : <%= posts[i].날짜 %></p>
-                    <button class="btn btn-danger delete" data-id="<%= posts[i]._id%>">삭제</button>
+                    <p>글번호 : <%= serch[i]._id %></p>
+                    <h4>할 일 : <%= serch[i].제목 %></h4>
+                    <p>마감일 : <%= serch[i].날짜 %></p>
+                    <button class="btn btn-danger delete" data-id="<%= serch[i]._id%>">삭제</button>
                 </li>
                 <% }); %>
         </ul>
@@ -54,11 +47,6 @@
                 console.log(xhr, textStatus, errorThrown);
             });
         });
-        
-        $('#serch').click(function(){
-            let 입력한값 = $('#serchInput').val();
-            window.location.replace('/serch?value='+ 입력한값);
-        })
     </script>
 
 
