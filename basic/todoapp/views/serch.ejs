@@ -17,6 +17,12 @@
 <body>
     <%- include('nav.html') %>
 
+    <h4 class="ml-2 my-3 text-center">이곳은 검색결과 페이지</h4>
+    <div class="container input-group mb-2">
+        <input id="serchInput" class="form-control">
+        <button id="serch" class="input-group-append btn btn-danger">검색</button>
+    </div>
+
     <div class="container">
         <ul class="list-group">
             <% serch.forEach((e, i)=>{ %>
