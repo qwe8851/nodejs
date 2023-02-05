@@ -125,23 +125,31 @@ app.get('/fail', function (요청, 응답) {
     응답.render('fail.ejs');
 }); 
 
-// local Strategy 인증 방식
+// local Strategy 인증 방법
 passport.use(new LocalStrategy({
     usernameField: 'id',    // form에 id를 가진 것
     passwordField: 'pw',    // form에 pw를 가진 것
     session: true,          // 로그인 후 세션을 저장할 것인지 여부
     passReqToCallback: false,   // 아이디/비번 말고도 다른 정보 검증 시
 }, function (입력한아이디, 입력한비번, done) {
-    //console.log(입력한아이디, 입력한비번);
+    console.log(입력한아이디, 입력한비번);
     db.collection('login').findOne({ id: 입력한아이디 }, function (에러, 결과) {
         if (에러) return done(에러)
-
-        if (!결과) return done(null, false, { message: '존재하지않는 아이디요' })
-        if (입력한비번 == 결과.pw) {
-            return done(null, 결과)
+        
+        if (!결과) return done(null, false, { message: '존재하지않는 아이디요' })   // db에 id가 없으면
+        if (입력한비번 == 결과.pw) {        // db에 id가 있으면, 입력된비번과 결과.pw를 비교
+            return done(null, 결과) // ✨ 여기의 결과가
         } else {
             return done(null, false, { message: '비번틀렸어요' })
         }
     })
 }));
 
+// 세션 생성                     ✨ 여기의 user로 들어감
+passport.serializeUser(function (user, done) {
+    done(null, user.id);    // id를 이용해서 세션을 저장시키는 코드 (로그인 성공 시 발동) 세션데이터를 만들고 세션의 id정보를 쿠키로 보냄
+});
+
+passport.deserializeUser(function (아이디, done) { // 이 세션 데이터를 가진 사람은 DB에서 찾기(마이페이지 접속 시 발동)
+    done(null, {});
+});
