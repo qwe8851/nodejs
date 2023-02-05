@@ -122,8 +122,28 @@ app.post('/login', passport.authenticate('local', {
     응답.redirect('/');
 });
 app.get('/fail', function (요청, 응답) {
-    응답.render('fail.ejs');
+    응답.send('로그인 실패!');
 }); 
+
+app.get('/mypage', 로그인했니, function (요청, 응답) {
+    console.log(요청.user);   // 아래 deserializeUser에서 찾은 user정보
+    응답.render('mypage.ejs', {사용자 : 요청.user});
+}); 
+
+// 미들웨어 만드는 법
+function 로그인했니(요청, 응답, next){
+    if(요청.user){  //로그인 후 세션이 있으면 요청.user가 항상 있음. 
+        next(); // 통과
+    } else{
+        응답.send('로그인 안하셨는데요?');
+    }
+}
+
+
+
+
+
+
 
 // local Strategy 인증 방법
 passport.use(new LocalStrategy({
@@ -149,7 +169,9 @@ passport.use(new LocalStrategy({
 passport.serializeUser(function (user, done) {
     done(null, user.id);    // id를 이용해서 세션을 저장시키는 코드 (로그인 성공 시 발동) 세션데이터를 만들고 세션의 id정보를 쿠키로 보냄
 });
-
+// 169번 줄에 user.id와 아래 파라미터의 아이디와 동일함.
 passport.deserializeUser(function (아이디, done) { // 이 세션 데이터를 가진 사람은 DB에서 찾기(마이페이지 접속 시 발동)
-    done(null, {});
+    db.collection('login').findOne({id: 아이디}, function(에러, 결과){
+        done(null, 결과);   //{id:test, pw:test}
+    });
 });
