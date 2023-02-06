@@ -19,20 +19,20 @@
 
     <h4 class="ml-2 my-3 text-center">이곳은 검색결과 페이지</h4>
     <div class="container input-group mb-2">
-        <input id="serchInput" class="form-control">
-        <button id="serch" class="input-group-append btn btn-danger">검색</button>
+        <input id="search-input" class="form-control">
+        <button id="search" class="input-group-append btn btn-danger">검색</button>
     </div>
 
     <div class="container">
         <ul class="list-group">
-            <% serch.forEach((e, i)=>{ %>
+            <% search.forEach(e=>{ %>
                 <li class="list-group-item">
-                    <p>글번호 : <%= serch[i]._id %></p>
-                    <h4>할 일 : <%= serch[i].제목 %></h4>
-                    <p>마감일 : <%= serch[i].날짜 %></p>
-                    <button class="btn btn-danger delete" data-id="<%= serch[i]._id%>">삭제</button>
+                    <p>글번호 : <%= e._id %></p>
+                    <h4>할 일 : <%= e.제목 %></h4>
+                    <p>마감일 : <%= e.날짜 %></p>
+                    <button class="btn btn-danger delete" data-id="<%= e._id%>">삭제</button>
                 </li>
-                <% }); %>
+            <% }); %>
         </ul>
     </div>
 
@@ -53,6 +53,12 @@
                 console.log(xhr, textStatus, errorThrown);
             });
         });
+
+        $('#search').click(function () {
+            let 입력한값 = $('#search-input').val();
+            window.location.replace('/search?value=' + 입력한값);
+        });
+
     </script>
 
 
